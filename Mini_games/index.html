@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Game Hub</title>
+    <style>
+        body {
+            /* background: #121212; */
+            background-image: url(bg.jpg);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff7043;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            color: #fff;
+            background-color: #333;
+            border: 2px solid #555;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: #ff7043;
+            transform: scale(1.1);
+            box-shadow: 0px 5px 20px rgba(255, 112, 67, 0.7);
+        }
+
+        .game-area {
+            margin-top: 30px;
+            font-size: 1.6rem;
+            text-align: center;
+            color: #fff;
+        }
+
+        .game-options {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #555;
+            background-color: #222;
+            color: #fff;
+        }
+
+        input[type="number"]:focus {
+            border: 2px solid #ff7043;
+        }
+
+        .reset-button {
+            margin-top: 30px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            background-color: #444;
+            border: 2px solid #555;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #ff7043;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            button {
+                font-size: 1.2rem;
+                padding: 15px 25px;
+            }
+
+            .game-area {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+
+            .reset-button {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Multi-Game Hub</h1>
+    <div class="buttons">
+        <button onclick="showGame('coin')">Coin Toss</button>
+        <button onclick="showGame('dice')">Dice Roll</button>
+        <button onclick="showGame('guess')">Guess the Number</button>
+    </div>
+
+    <div id="game-area" class="game-area">
+        <!-- Dynamic Game Content Will Go Here -->
+    </div>
+
+    <button class="reset-button" onclick="resetGame()">Reset Game</button>
+
+    <script>
+        let wins = 0, losses = 0, ties = 0;
+
+        function showGame(game) {
+            let gameContent = '';
+            switch(game) {
+                case 'coin':
+                    gameContent = `
+                        <h2>Coin Toss</h2>
+                        <div class="buttons">
+                            <button onclick="playCoin('heads')">Heads</button>
+                            <button onclick="playCoin('tails')">Tails</button>
+                        </div>
+                        <div id="coin-result"></div>
+                    `;
+                    break;
+                case 'dice':
+                    gameContent = `
+                        <h2>Dice Roll</h2>
+                        <div class="buttons">
+                            <button onclick="playDice()">Roll Dice</button>
+                        </div>
+                        <div id="dice-result"></div>
+                    `;
+                    break;
+                case 'guess':
+                    gameContent = `
+                        <h2>Guess the Number</h2>
+                        <input type="number" id="guess-input" placeholder="Enter a number (1-10)" />
+                        <button onclick="playGuess()">Guess</button>
+                        <div id="guess-result"></div>
+                    `;
+                    break;
+            }
+            document.getElementById('game-area').innerHTML = gameContent;
+        }
+
+        // Coin Toss
+        function playCoin(userChoice) {
+            const coin = Math.random() < 0.5 ? 'heads' : 'tails';
+            let result = '';
+
+            if (userChoice === coin) {
+                result = `You guessed ${userChoice} and it's correct!`;
+                wins++;
+            } else {
+                result = `You guessed ${userChoice} but it's ${coin}.`;
+                losses++;
+            }
+
+            document.getElementById('coin-result').textContent = result;
+        }
+
+        // Dice Roll
+        function playDice() {
+            const roll = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('dice-result').textContent = `You rolled a ${roll}.`;
+        }
+
+        // Guess the Number
+        function playGuess() {
+            const randomNumber = Math.floor(Math.random() * 10) + 1;
+            const userGuess = parseInt(document.getElementById('guess-input').value);
+
+            if (userGuess === randomNumber) {
+                document.getElementById('guess-result').textContent = `You guessed it right! The number was ${randomNumber}.`;
+                wins++;
+            } else {
+                document.getElementById('guess-result').textContent = `Wrong guess! The number was ${randomNumber}.`;
+                losses++;
+            }
+        }
+
+        // Reset the game
+        function resetGame() {
+            wins = 0;
+            losses = 0;
+            ties = 0;
+            document.getElementById('coin-result').textContent = '';
+            document.getElementById('dice-result').textContent = '';
+            document.getElementById('guess-result').textContent = '';
+            document.getElementById('game-area').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
