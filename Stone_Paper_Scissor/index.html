@@ -141,17 +141,17 @@
             ) {
                 result = `You win! Computer chose ${computerChoice}.`;
                 wins++;
-                document.body.style.backgroundColor = "#4CAF50"; // Green for win
+ // Green for win
             } else {
                 result = `You lose! Computer chose ${computerChoice}.`;
                 losses++;
-                document.body.style.backgroundColor = "#F44336"; // Red for loss
+ // Red for loss
             }
 
             document.getElementById('result').textContent = result;
             document.getElementById('score').textContent = `Wins: ${wins} | Losses: ${losses} | Ties: ${ties}`;
             setTimeout(() => { 
-                document.body.style.backgroundColor = "#121212"; 
+                document.getElementById('result').textContent = '';
             }, 500); // Reset background color after 500ms
         }
 
